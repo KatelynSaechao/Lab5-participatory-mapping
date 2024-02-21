@@ -46,9 +46,15 @@
             margin-bottom: 10px;
         }
 
-        #content {
+        #date {
             width: 100%;
             height: 45px;
+            margin-bottom: 10px;
+        }
+
+        #content {
+            width: 100%;
+            height: 70px;
             margin-bottom: 10px;
         }
 
@@ -114,6 +120,7 @@
                     'type': 'Feature',
                     'properties': {
                         'contributor': data.rows[i].contributor,
+                        'date': data.rows[i].date,
                         'content': data.rows[i].content,
                     },
                     'geometry': {
@@ -126,6 +133,11 @@
 
         // After the map loads, add the GeoJSON source and layer for existing points
         map.on("load", function () {
+            map.loadImage('/img/tree.png', function (error, image) {
+                if (error) throw error;
+                map.addImage('custom-marker', image);
+            });
+
             map.addSource('places', {
                 'type': 'geojson',
                 'data': geojson
@@ -133,11 +145,11 @@
 
             map.addLayer({
                 'id': 'placesLayer',
-                'type': 'circle',
+                'type': 'symbol',
                 'source': 'places',
-                'paint': {
-                    'circle-radius': 6,
-                    'circle-color': '#B42222'
+                'layout': {
+                    'icon-image': 'custom-marker',
+                    'icon-size': 0.1
                 }
             });
         });
@@ -149,10 +161,11 @@
             var coordinates = e.features[0].geometry.coordinates;
             var content = e.features[0].properties.content;
             var contributor = e.features[0].properties.contributor;
+            var date = e.features[0].properties.date;
 
             popup = new maplibregl.Popup()
                 .setLngLat(coordinates)
-                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>")
+                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>" + "on " + date)
                 .addTo(map);
         });
 
@@ -169,7 +182,7 @@
             }
 
             // Create the HTML content for the contribution popup
-            const popupContent = '<div id="popup"><input type="text" id="name" placeholder="Input your name here..."><input type="text" id="content" placeholder="Input your message here..."><button id="submit">submit</button></div>';
+            const popupContent = '<div id="popup"><input type="text" id="name" placeholder="Enter your name here..."><label for="date">Enter the date and time you visited this location (MM/DD/YYYY HH:MM AM/PM):</label><input type="text" id="date" placeholder="Enter date here..."><input type="text" id="content" placeholder="Enter your message here..."><button id="submit">submit</button></div>';
 
             // Create a new popup and set its content
             popup = new maplibregl.Popup({ closeOnClick: false })
@@ -186,12 +199,14 @@
         async function submitNewRecord() {
             let contributor = document.getElementById('name').value;
             let content = document.getElementById('content').value;
+            let date = document.getElementById('date').value;
             let lngLat = popup.getLngLat();
 
             // Create a new URLSearchParams object and append the data to it
             let newRecord = new URLSearchParams();
             newRecord.append('contributor', contributor);
             newRecord.append('content', content);
+            newRecord.append('date', date)
             newRecord.append('lng', lngLat.lng);
             newRecord.append('lat', lngLat.lat);
 
@@ -215,6 +230,7 @@
                     'properties': {
                         'contributor': contributor,
                         'content': content,
+                        'date': date,
                     },
                     'geometry': {
                         'type': 'Point',
