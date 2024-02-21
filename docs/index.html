@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>A Minimum Viable Participatory Mapping Project</title>
+    <title>Mapping Nature Experiences in Seattle</title>
     <script src="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.css" rel="stylesheet" />
     <!-- Styles for the map and popup -->
@@ -24,13 +24,13 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 350px;
+            width: 500px;
             margin: 10px;
             padding: 10px;
             background-color: #ffffff;
             border-radius: 5px;
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
+            font-size: 16px;
             line-height: 1.5;
             color: #000000;
             z-index: 1;
@@ -70,20 +70,25 @@
     
     <!-- Information box -->
     <div id="info">
-        <h3>A Minimum Viable Participatory Mapping Project</h3>
-        <h4>Bo Zhao | University of Washington </h4>
+        <h3>Mapping Nature Experiences in Seattle</h3>
+        <h4>Created by: Katelyn Saechao</h4>
+        </p>
+        <i>Last updated: February 20, 2024</i>
         <!-- Introduction to the participatory mapping solution -->
         <p>
-            This map is a minimum viable solution to participatory mapping.
-            Users can contribute their local knowledge by clicking on the map,
-            submitting their information, and viewing it represented as a red dot.
-            Existing contributions can also be viewed as red dots. While this map only offers
-            basic functionality, it can be expanded or repurposed to build your own participatory mapping projects. To help you envision what this map can assist you, you can take a look at a few existing projects, such as <a href="https://hgis.uw.edu/lgbtqspaces/" target="_blank"><b>Shifting LGBTQ+ spaces</b></a>,
-            <a href="https://hgis.uw.edu/chop"> <b>Archiving the CHOP</b></a> and <a href="https://www.queeringthemap.com/" target="_blank"><b>Queering the Map</b></a>.
-            An instruction can be found 
+            This map allows people to map out their experiences in nature in the Seattle area!
+            To get started, click the location on the map and simply enter your name,
+            the date and time you visited this nature location, and your description of your experience at
+            this place in nature.
+        </p>
+            The template used to create this participatory map can be found
             <a href="https://www.github.com/jakobzhao/participatory-mapping" target="_blank">here</a>.
-            <i>Last update: June 23, 2023</i>
         </p> 
+        <h3>Citation</h3>
+            Zhao, Bo, 2023, "Crafting Your Own Participatory Mapping Project: A Guide", 
+            <a href= "https://doi.org/10.7910/DVN/VSND2H"><b>https://doi.org/10.7910/DVN/VSND2H</b></a>,
+            <i>Harvard Dataverse</i>, V1
+        </p>
     </div>
     
     <!-- JavaScript code for the interactive map and data submission -->
@@ -98,13 +103,19 @@
         };
         
         // Create a new map instance
+        //const bounds =  [[-122.4597, 47.4814], [-122.2244, 47.7341]];
+
+        const bounds =  [[-122.70, 47.4814], [-121.98, 47.7341]];
         let map = new maplibregl.Map({
             container: 'map', // container id
             style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=Cusoe5zmfmn26glFoeoe', // style URL
             center: [-122.3321, 47.6062], // starting position [lng, lat]
-            // pitch: 45, // pitch in degrees
-            zoom: 12 // starting zoom
+            maxBounds: bounds,
+            zoom: 12, // starting zoom
+            minZoom: 10.25
+
         });
+
 
         // Fetch existing records when the window is loaded
         window.addEventListener("load", async function () {
