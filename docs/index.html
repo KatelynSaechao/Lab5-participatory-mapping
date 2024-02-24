@@ -135,7 +135,7 @@
             style: 'https://api.maptiler.com/maps/outdoor-v2/style.json?key=lGvECGW3EnHercolKzu9', // style URL
             center: [-122.3321, 47.6062], // starting position [lng, lat]
             maxBounds: bounds,
-            zoom: 12, // starting zoom
+            zoom: 11, // starting zoom
             minZoom: 10.25
 
         });
@@ -170,7 +170,7 @@
 
         // After the map loads, add the GeoJSON source and layer for existing points
         map.on("load", function () {
-            map.loadImage('/img/tree.png', function (error, image) {
+            map.loadImage('https://raw.githubusercontent.com/KatelynSaechao/Lab5-participatory-mapping/602d9d43671c230baf6c20c6f967f5383bdf9ab0/img/tree.png', function (error, image) {
                 if (error) throw error;
                 map.addImage('custom-marker', image);
             });
@@ -186,7 +186,7 @@
                 'source': 'places',
                 'layout': {
                     'icon-image': 'custom-marker',
-                    'icon-size': 1
+                    'icon-size': 0.1
                 }
             });
         });
