@@ -48,6 +48,14 @@
             border-radius: 4px;
         }
 
+        #email {
+            width: 100%;
+            height: 20px;
+            margin-bottom: 10px;
+            border: 4px solid rgb(44, 167, 83);
+            border-radius: 4px;
+        }
+
         #date {
             width: 100%;
             height: 45px;
@@ -90,8 +98,7 @@
     <div id="info">
         <h3>Mapping Nature Experiences in Seattle</h3>
         <h4>Created by: Katelyn Saechao</h4>
-        </p>
-        <i>Last updated: February 20, 2024</i>
+
         <!-- Introduction to the participatory mapping solution -->
         <p>
             This map allows people to map out their experiences in nature in the Seattle area!
@@ -148,6 +155,7 @@
                     'type': 'Feature',
                     'properties': {
                         'contributor': data.rows[i].contributor,
+                        'email': data.rows[i].email,
                         'date': data.rows[i].date,
                         'time': data.rows[i].time,
                         'content': data.rows[i].content,
@@ -192,6 +200,7 @@
             var contributor = e.features[0].properties.contributor;
             var date = e.features[0].properties.date;
             var time = e.features[0].properties.time;
+            var email = e.features[0].properties.email;
 
             popup = new maplibregl.Popup()
                 .setLngLat(coordinates)
@@ -212,7 +221,7 @@
             }
 
             // Create the HTML content for the contribution popup
-            const popupContent = '<div id="popup"><label for="name">Enter your name:</label><input type="text" id="name" placeholder="Enter your name here..."><label for="date">Enter the date you visited this location (MM/DD/YYYY):</label><input type="text" id="date" placeholder="Enter date here..."><label for= "time">Enter the time you visited this location (HH:MM AM/PM):</label><input type="text" id="time" placeholder="Enter time here..."><label for="content">Describe your experience at this nature location:</label><input type="text" id="content" placeholder="Enter your message here..."><button id="submit">submit</button></div>';
+            const popupContent = '<div id="popup"><label for="name">Enter your name:</label><input type="text" id="name" placeholder="Enter your name here..."><label for="email">Enter your email (it will not be publicly displayed on the website):</label><input type="text" id="email" placeholder="Enter email here..."><label for="date">Enter the date you visited this location (MM/DD/YYYY):</label><input type="text" id="date" placeholder="Enter date here..."><label for= "time">Enter the time you visited this location (HH:MM AM/PM):</label><input type="text" id="time" placeholder="Enter time here..."><label for="content">Describe your experience at this nature location:</label><input type="text" id="content" placeholder="Enter your message here..."><button id="submit">submit</button></div>';
 
             // Create a new popup and set its content
             popup = new maplibregl.Popup({ closeOnClick: false })
@@ -231,6 +240,7 @@
             let content = document.getElementById('content').value;
             let date = document.getElementById('date').value;
             let time = document.getElementById('time').value;
+            let email = document.getElementByID('email').value;
             let lngLat = popup.getLngLat();
 
             // Create a new URLSearchParams object and append the data to it
@@ -239,6 +249,7 @@
             newRecord.append('content', content);
             newRecord.append('date', date);
             newRecord.append('time', time);
+            newRecord.append('email', email);
             newRecord.append('lng', lngLat.lng);
             newRecord.append('lat', lngLat.lat);
 
@@ -264,6 +275,7 @@
                         'content': content,
                         'date': date,
                         'time': time,
+                        'email': email,
                     },
                     'geometry': {
                         'type': 'Point',
