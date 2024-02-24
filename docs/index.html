@@ -82,6 +82,10 @@
 
         #submit {
             float: right;
+            background-color: rgb(33, 109, 69);
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -236,7 +240,7 @@
             let content = document.getElementById('content').value;
             let date = document.getElementById('date').value;
             let time = document.getElementById('time').value;
-            let email = document.getElementByID('email').value;
+            let email = document.getElementById('email').value;
             let lngLat = popup.getLngLat();
 
             // Create a new URLSearchParams object and append the data to it
