@@ -52,6 +52,12 @@
             margin-bottom: 10px;
         }
 
+        #time {
+            width: 100%;
+            height: 45px;
+            margin-bottom: 10px;
+        }
+
         #content {
             width: 100%;
             height: 70px;
@@ -79,7 +85,7 @@
             This map allows people to map out their experiences in nature in the Seattle area!
             To get started, click the location on the map and simply enter your name,
             the date and time you visited this nature location, and your description of your experience at
-            this place in nature.
+            this place in nature. To read the experiences on the map, hover your mouse over the tree location marker!
         </p>
             The template used to create this participatory map can be found
             <a href="https://www.github.com/jakobzhao/participatory-mapping" target="_blank">here</a>.
@@ -103,7 +109,6 @@
         };
         
         // Create a new map instance
-        //const bounds =  [[-122.4597, 47.4814], [-122.2244, 47.7341]];
 
         const bounds =  [[-122.70, 47.4814], [-121.98, 47.7341]];
         let map = new maplibregl.Map({
@@ -132,6 +137,7 @@
                     'properties': {
                         'contributor': data.rows[i].contributor,
                         'date': data.rows[i].date,
+                        'time': data.rows[i].time,
                         'content': data.rows[i].content,
                     },
                     'geometry': {
@@ -173,10 +179,11 @@
             var content = e.features[0].properties.content;
             var contributor = e.features[0].properties.contributor;
             var date = e.features[0].properties.date;
+            var time = e.features[0].properties.time;
 
             popup = new maplibregl.Popup()
                 .setLngLat(coordinates)
-                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>" + "on " + date)
+                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>" + "on " + date + " at " + time)
                 .addTo(map);
         });
 
@@ -193,7 +200,7 @@
             }
 
             // Create the HTML content for the contribution popup
-            const popupContent = '<div id="popup"><input type="text" id="name" placeholder="Enter your name here..."><label for="date">Enter the date and time you visited this location (MM/DD/YYYY HH:MM AM/PM):</label><input type="text" id="date" placeholder="Enter date here..."><input type="text" id="content" placeholder="Enter your message here..."><button id="submit">submit</button></div>';
+            const popupContent = '<div id="popup"><label for="name">Enter your name:</label><input type="text" id="name" placeholder="Enter your name here..."><label for="date">Enter the date you visited this location (MM/DD/YYYY):</label><input type="text" id="date" placeholder="Enter date here..."><label for= "time">Enter the time you visited this location (HH:MM AM/PM):</label><input type="text" id="time" placeholder="Enter time here..."><label for="content">Describe your experience at this nature location:</label><input type="text" id="content" placeholder="Enter your message here..."><button id="submit">submit</button></div>';
 
             // Create a new popup and set its content
             popup = new maplibregl.Popup({ closeOnClick: false })
@@ -211,13 +218,15 @@
             let contributor = document.getElementById('name').value;
             let content = document.getElementById('content').value;
             let date = document.getElementById('date').value;
+            let time = document.getElementById('time').value;
             let lngLat = popup.getLngLat();
 
             // Create a new URLSearchParams object and append the data to it
             let newRecord = new URLSearchParams();
             newRecord.append('contributor', contributor);
             newRecord.append('content', content);
-            newRecord.append('date', date)
+            newRecord.append('date', date);
+            newRecord.append('time', time);
             newRecord.append('lng', lngLat.lng);
             newRecord.append('lat', lngLat.lat);
 
@@ -242,6 +251,7 @@
                         'contributor': contributor,
                         'content': content,
                         'date': date,
+                        'time': time,
                     },
                     'geometry': {
                         'type': 'Point',
