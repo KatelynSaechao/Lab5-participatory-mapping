@@ -58,7 +58,7 @@
 
         #date {
             width: 100%;
-            height: 45px;
+            height: 20px;
             margin-bottom: 10px;
             border: 4px solid rgb(44, 167, 83);
             border-radius: 4px;
@@ -66,7 +66,7 @@
 
         #time {
             width: 100%;
-            height: 45px;
+            height: 20px;
             margin-bottom: 10px;
             border: 4px solid rgb(44, 167, 83);
             border-radius: 4px;
@@ -87,6 +87,7 @@
             border: none;
             border-radius: 5px;
         }
+
     </style>
 </head>
 
@@ -102,7 +103,7 @@
         <!-- Introduction to the participatory mapping solution -->
         <p>
             This map allows people to map out their experiences in nature in the Seattle area!
-            To get started, click the location on the map and simply enter your name,
+            To get started, click the location on the map and simply enter your name, email,
             the date and time you visited this nature location, and your description of your experience at
             this place in nature. To read the experiences on the map, hover your mouse over the tree location marker!
         </p>
@@ -218,14 +219,24 @@
             }
 
             // Create the HTML content for the contribution popup
-            const popupContent = '<div id="popup"><label for="name">Enter your name:</label><input type="text" id="name" placeholder="Enter your name here..."><label for="email">Enter your email (it will not be publicly displayed on the website):</label><input type="text" id="email" placeholder="Enter email here..."><label for="date">Enter the date you visited this location (MM/DD/YYYY):</label><input type="text" id="date" placeholder="Enter date here..."><label for= "time">Enter the time you visited this location (HH:MM AM/PM):</label><input type="text" id="time" placeholder="Enter time here..."><label for="content">Describe your experience at this nature location:</label><input type="text" id="content" placeholder="Enter your message here..."><button id="submit">submit</button></div>';
+            const popupContent = '<div id="popup"><label for="name">Name:</label><input type="text" id="name" placeholder="Enter your name here..."><label for="email">Email (it will not be publicly displayed on the website):</label><input type="text" id="email" placeholder="Enter email here..."><label for="date">Date you visited this location (M/DD/YYYY):</label><input type="text" id="date" placeholder="Enter date here..."><label for= "time">Time you visited this location (H:MM AM/PM):</label><input type="text" id="time" placeholder="Enter time here..."><label for="content">Your experience at this nature location:</label><input type="text" id="content" placeholder="Enter your message here..."><button id="submit">submit</button></div>';
 
             // Create a new popup and set its content
-            popup = new maplibregl.Popup({ closeOnClick: false })
+            popup = new maplibregl.Popup({ closeOnClick: false, maxWidth: '300px'})
                 .setLngLat(e.lngLat)
                 .setHTML(popupContent)
                 .addTo(map);
 
+
+            const popupBounds = popup.getBounds();
+            const mapBounds = map.getBounds();
+
+            if (!mapBounds.contains(popupBounds.getNorthEast())) {
+                popup.setLngLat([popupLngLat.lng - 0.01, popupLngLat.lat]);
+            }
+            if (!mapBounds.contains(popupBounds.getSouthWest())) {
+                popup.setLngLat([popupLngLat.lng, popupLngLat.lat - 0.01]);
+            }
             // Attach an event listener to the submit button to handle new record submission
             document.getElementById('submit').addEventListener('click', submitNewRecord);
             e.preventDefault();
