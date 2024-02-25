@@ -214,6 +214,7 @@
 
         // Handle click event on the map to allow user contribution
         map.on('click', function (e) {
+            // Remove any existing popup
             if (popup) {
                 popup.remove();
             }
@@ -231,6 +232,7 @@
             document.getElementById('submit').addEventListener('click', submitNewRecord);
             e.preventDefault();
         });
+
 
         // Function to handle the submission of a new record
         async function submitNewRecord() {
