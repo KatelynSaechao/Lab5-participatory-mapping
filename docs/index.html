@@ -227,16 +227,6 @@
                 .setHTML(popupContent)
                 .addTo(map);
 
-
-            const popupBounds = popup.getBounds();
-            const mapBounds = map.getBounds();
-
-            if (!mapBounds.contains(popupBounds.getNorthEast())) {
-                popup.setLngLat([popupLngLat.lng - 0.01, popupLngLat.lat]);
-            }
-            if (!mapBounds.contains(popupBounds.getSouthWest())) {
-                popup.setLngLat([popupLngLat.lng, popupLngLat.lat - 0.01]);
-            }
             // Attach an event listener to the submit button to handle new record submission
             document.getElementById('submit').addEventListener('click', submitNewRecord);
             e.preventDefault();
