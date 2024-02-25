@@ -128,13 +128,10 @@
         };
         
         // Create a new map instance
-
-        const bounds =  [[-122.70, 47.4814], [-121.98, 47.7341]];
         let map = new maplibregl.Map({
             container: 'map', // container id
             style: 'https://api.maptiler.com/maps/outdoor-v2/style.json?key=lGvECGW3EnHercolKzu9', // style URL
             center: [-122.3321, 47.6062], // starting position [lng, lat]
-            maxBounds: bounds,
             zoom: 11, // starting zoom
             minZoom: 10.25
 
